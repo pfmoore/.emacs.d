@@ -116,3 +116,8 @@
   (setq linum-relative-current-symbol "")
   (global-linum-mode t)
   (linum-relative-mode))
+
+;; Start the Emacs server
+(require 'server)
+(unless (server-running-p)
+    (server-start))
