@@ -7,16 +7,24 @@
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+;; Don't load installed packages after init completed,
+;; instead do it now
 (setq package-enable-at-startup nil)
 (package-initialize)
+
+;; Needed to enable the use-package function below
 (require 'use-package)
 
 ;; Specifies local directory to load packages from
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(let ((default-directory  "~/.emacs.d/packages/"))
-  (normal-top-level-add-subdirs-to-load-path))
+;; This seems to only be so that we can manually add things there.
+;; These directories are not managed via package control.
+; (add-to-list 'load-path "~/.emacs.d/lisp/")
+; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+; (let ((default-directory  "~/.emacs.d/packages/"))
+;   (normal-top-level-add-subdirs-to-load-path))
 
+;; Set the default font, try a series of options in turn.
+;; Could probably be cleaned up somewhat.
 (condition-case nil
     (set-face-attribute 'default nil :font "Deja Vu Sans Mono-12")
   (error
@@ -27,20 +35,23 @@
 	  (set-face-attribute 'default nil :font "Courier New-12")
 	(error nil))))))
 
-;(require use-package)
-
 ;; Essential settings.
-(setq inhibit-splash-screen t
+;; Review. These are "essential" only in the sense that the person I picked this
+;; section up from thought they were...
+(setq
+      ; From the help, the first two do the same thing.
+      inhibit-splash-screen t
       inhibit-startup-message t
+      ; For the next one, see the help. This probably doesn't work!
       inhibit-startup-echo-area-message t)
-(setq make-backup-files nil)
-(setq auto-save-default nil)
+(setq make-backup-files nil) ; No backup files ending in ~
+(setq auto-save-default nil) ; No autosave files #...#
 (tool-bar-mode -1) ; No toolbar
 (scroll-bar-mode -1) ; Hide scrollbars
 (menu-bar-mode -1) ; Hide menu bar
 (show-paren-mode t) ; Highlights matching parenthesis
-(electric-pair-mode t)
-(setq initial-scratch-message "") ; No scratch text
+(electric-pair-mode t) ; Inserts close-paren when open is typed
+; (setq initial-scratch-message "") ; No scratch text
 (setq-default show-trailing-whitespace t) ; Shows all trailing whitespace
 
 (use-package sublime-themes
