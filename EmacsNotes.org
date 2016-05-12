@@ -1,0 +1,89 @@
+* Configuration of Emacs
+** Installation
+
+1. Unzip Emacs binaries into C:\Utils\Emacs
+2. Run C:\Utils\Emacs\bin\runemacs.exe
+
+** Setting PATH and shortcuts
+
+1. Add the directory C:\Utils\Emacs\bin to PATH (user path is fine)
+2. Run Emacs, and pin the icon to the start menu
+3. Edit that icon (right click, then right click / properties on
+   the "emacs" entry)
+   1. Set the target to C:\Utils\Emacs\bin\runemacs.exe
+   2. Set the "Start In" directory as preferred (C:\Work\Scratch)
+   3. "General" tab, set the name to "Emacs"
+   4. Save
+
+** Setting Emacs default environment
+
+In regedit, create a key HKCU\Software\GNU\Emacs
+Add string values to that key for environment variables specific to Emacs
+1. ALTERNATE_EDITOR - set to runemacs.exe (needed for emacsclient)
+2. HOME - where .emacs.d is saved, can set this to a REG_EXPAND_SZ value
+   with content %USERPROFILE% if you want to move the location from
+   $APPDATA to $USERPROFILE. (May be a bad choice, default is in the
+   roaming profile).
+
+** Explorer Integration
+
+1. Registry key HKCR\*\shell\Emacs\command
+   Set default value = C:\Utils\Emacs\bin\emacsclientw.exe "%L"
+   Can set default value of the "Emacs" key to "&Emacs" to supply text
+   including a shortkut key.
+   Can do the same under HKCR\Folder for folders and HKCR\Drive
+   May be able to omit the path, but might need the emacs dir to be
+   in the *system* PATH, not the user path (see above).
+   See http://superuser.com/questions/136838/which-special-variables-are-available-when-writing-a-shell-command-for-a-context
+
+** Easier commands in Powershell
+
+In $profile, add:
+
+    function emacs {
+	if ($args.count -eq 0) {
+	    runemacs
+	}
+	else {
+	    emacsclientw $args
+	}
+    }
+
+Not sure how much I like this. We'll see. The problem is that it hides the
+*actual* emacs command, which I'd hardly ever use, but even so.
+
+Note that you can't run emacsclient with no arguments, which is why
+you need to check the argument count in the above.
+* Elisp configuration
+** Basic setup
+
+Require the "package" module and set up extra package archives.
+Manually install use-package to start with, to allow remaining parts of the
+init.el to work.
+
+* Package Management Basics
+** Definitions
+
+Install a package:
+Download a copy of the package into <package-user-dir>/<name>-<version>
+Extract the autoloads into <name>-autoloads.el
+Byte-compile the files
+
+Load a package:
+Add the "content directory" <package-user-dir>/<name>-<version> to load-path
+Evaluate <name>-autoloads.el to make default names available
+
+** Initialisation sequence
+
+By default, all installed packages are loaded after initialisation is complete.
+You can disable this by setting <package-enable-at-startup> to nil.
+If you do so, you probably want to explicitly load all packages by running
+(package-initialize).
+You may also want to do (package-initialize) after manually installing a package,
+or is there a better way?
+
+** Requiring a feature
+
+If a feature is not loaded (require 'feature) will load it. The autoloading
+mechanism means that some symbols from a package might be available even when
+it has not been required.
