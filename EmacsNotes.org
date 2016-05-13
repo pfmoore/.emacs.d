@@ -87,3 +87,9 @@ or is there a better way?
 If a feature is not loaded (require 'feature) will load it. The autoloading
 mechanism means that some symbols from a package might be available even when
 it has not been required.
+** Archives
+
+How to insist that a package gets loaded from a particular archive?
+Specifically, ``dash`` needs to be loaded from melpa-stable, not
+from melpa. But ``sublime-themes`` needs to be loaded from melpa, as
+it isn't in melpa-stable.

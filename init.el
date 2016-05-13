@@ -5,12 +5,27 @@
 ;; Setup package control
 (require 'package)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+;(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 ;; Don't load installed packages after init completed,
 ;; instead do it now
 (setq package-enable-at-startup nil)
+
+;; Activate installed packages
 (package-initialize)
+
+;; A bit of machinery to ensure basic packages are installed. Obtained from
+;; http://stackoverflow.com/questions/10092322/how-to-automatically-install-emacs-packages-by-specifying-a-list-of-package-name
+
+;; Fetch the list of packages available 
+(unless package-archive-contents
+  (package-refresh-contents))
+
+;; Install the missing packages
+(setq package-list '(use-package))
+(dolist (package package-list)
+  (unless (package-installed-p package)
+    (package-install package)))
 
 ;; Needed to enable the use-package function below
 (require 'use-package)
@@ -117,7 +132,29 @@
   (global-linum-mode t)
   (linum-relative-mode))
 
+(use-package magit
+  :ensure t
+  :defer t)
+;;  :config
+;;  (setq magit-branch-arguments nil)
+;;  (setq magit-push-always-verify nil)
+;;  (setq magit-last-seen-setup-instructions "1.4.0"))
+
 ;; Start the Emacs server
 (require 'server)
 (unless (server-running-p)
     (server-start))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (magit use-package sublime-themes powershell linum-relative helm evil-surround evil-leader))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
