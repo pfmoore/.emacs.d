@@ -11,6 +11,10 @@
 ;; instead do it now
 (setq package-enable-at-startup nil)
 
+;; Require the "dash" package to be loaded from melpa-stable
+(setq package-pinned-packages
+      '((dash . "melpa-stable")))
+
 ;; Activate installed packages
 (package-initialize)
 
