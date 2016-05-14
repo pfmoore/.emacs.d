@@ -1,6 +1,5 @@
 (setq url-proxy-services '(("http" . "localhost:3128")
-			   ("https" . "localhost:3128")
-			   ))
+                           ("https" . "localhost:3128")))
 
 ;; Setup package control
 (require 'package)
@@ -51,8 +50,8 @@
        (set-face-attribute 'default nil :font "Consolas-12")
      (error
       (condition-case nil
-	  (set-face-attribute 'default nil :font "Courier New-12")
-	(error nil))))))
+          (set-face-attribute 'default nil :font "Courier New-12")
+        (error nil))))))
 
 ;; Essential settings.
 ;; Review. These are "essential" only in the sense that the person I picked this
@@ -70,6 +69,7 @@
 (menu-bar-mode -1) ; Hide menu bar
 (show-paren-mode t) ; Highlights matching parenthesis
 (electric-pair-mode t) ; Inserts close-paren when open is typed
+(setq-default indent-tabs-mode nil) ; Burn all the tabs!
 ; (setq initial-scratch-message "") ; No scratch text
 (setq-default show-trailing-whitespace t) ; Shows all trailing whitespace
 
