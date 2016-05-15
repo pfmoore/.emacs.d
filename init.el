@@ -1,18 +1,26 @@
-(setq url-proxy-services '(("http" . "localhost:3128")
-                           ("https" . "localhost:3128")))
+;;(setq url-proxy-services '(("http" . "localhost:3128")
+;;                           ("https" . "localhost:3128")))
 
 ;; Setup package control
 (require 'package)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-;(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 ;; Don't load installed packages after init completed,
 ;; instead do it now
 (setq package-enable-at-startup nil)
 
+;; Prefer melpa-stable over melpa
+(setq package-archive-priorities
+      '(("melpa-stable" . 20)
+        ("org" . 20)
+        ("gnu" . 10)
+        ("melpa" . -10)))
+
+;; ALTERNATIVE APPROACH
 ;; Require the "dash" package to be loaded from melpa-stable
-(setq package-pinned-packages
-      '((dash . "melpa-stable")))
+;(setq package-pinned-packages
+;      '((dash . "melpa-stable")))
 
 ;; Activate installed packages
 (package-initialize)
@@ -20,7 +28,7 @@
 ;; A bit of machinery to ensure basic packages are installed. Obtained from
 ;; http://stackoverflow.com/questions/10092322/how-to-automatically-install-emacs-packages-by-specifying-a-list-of-package-name
 
-;; Fetch the list of packages available 
+;; Fetch the list of packages available
 (unless package-archive-contents
   (package-refresh-contents))
 
@@ -133,8 +141,7 @@
   :ensure t
   :config
   (setq linum-relative-current-symbol "")
-  (global-linum-mode t)
-  (linum-relative-mode))
+  (global-linum-mode t))
 
 (use-package magit
   :ensure t
