@@ -22,19 +22,20 @@ Add string values to that key for environment variables specific to Emacs
 1. ALTERNATE_EDITOR - set to runemacs.exe (needed for emacsclient)
 2. HOME - where .emacs.d is saved, can set this to a REG_EXPAND_SZ value
    with content %USERPROFILE% if you want to move the location from
-   $APPDATA to $USERPROFILE. (May be a bad choice, default is in the
-   roaming profile).
+   $APPDATA to $USERPROFILE. May be a bad choice, default is in the
+   roaming profile. Actually, it's required to ensure that Emacs and
+   Git agree on where configuration files are kept.
 
 ** Explorer Integration
 
 1. Registry key HKCR\*\shell\Emacs\command
-   Set default value = C:\Utils\Emacs\bin\emacsclientw.exe "%L"
-   Can set default value of the "Emacs" key to "&Emacs" to supply text
-   including a shortkut key.
-   Can do the same under HKCR\Folder for folders and HKCR\Drive
-   May be able to omit the path, but might need the emacs dir to be
-   in the *system* PATH, not the user path (see above).
-   See http://superuser.com/questions/136838/which-special-variables-are-available-when-writing-a-shell-command-for-a-context
+   Set default value = C:\Utils\Emacs\bin\emacsclientw.exe "%L" Can
+   set default value of the "Emacs" key to "&Emacs" to supply text
+   including a shortkut key.  Can do the same under HKCR\Folder for
+   folders and HKCR\Drive May be able to omit the path, but might need
+   the emacs dir to be in the *system* PATH, not the user path (see
+   above).  See
+   http://superuser.com/questions/136838/which-special-variables-are-available-when-writing-a-shell-command-for-a-context
 
 ** Easier commands in Powershell
 
