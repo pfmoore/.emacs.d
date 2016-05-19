@@ -169,3 +169,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;; Force git to use a GUI to ask for user ID and password
+(setenv "GIT_ASKPASS" "git-gui--askpass")
