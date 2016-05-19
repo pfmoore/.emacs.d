@@ -93,3 +93,9 @@ How to insist that a package gets loaded from a particular archive?
 Specifically, ``dash`` needs to be loaded from melpa-stable, not
 from melpa. But ``sublime-themes`` needs to be loaded from melpa, as
 it isn't in melpa-stable.
+* Tasks
+** TODO Learn more about capture in org-mode.
+   [2016-05-16 Mon]
+
+* Modes I need (use) regularly
+** SQL (Oracle syntax) and PL/SQL
