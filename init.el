@@ -51,6 +51,7 @@
 
 ;; Set the default font, try a series of options in turn.
 ;; Could probably be cleaned up somewhat.
+;; Doesn't seem to work in server mode...?
 (condition-case nil
     (set-face-attribute 'default nil :font "Deja Vu Sans Mono-12")
   (error
@@ -80,6 +81,7 @@
 (setq-default indent-tabs-mode nil) ; Burn all the tabs!
 ; (setq initial-scratch-message "") ; No scratch text
 (setq-default show-trailing-whitespace t) ; Shows all trailing whitespace
+(set-default 'truncate-lines t)
 
 (use-package sublime-themes
   :ensure t
