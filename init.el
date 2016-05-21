@@ -53,7 +53,7 @@
 ;; Could probably be cleaned up somewhat.
 ;; Doesn't seem to work in server mode...?
 (condition-case nil
-    (set-face-attribute 'default nil :font "Deja Vu Sans Mono-12")
+    (set-face-attribute 'default nil :font "DejaVu Sans Mono-12")
   (error
    (condition-case nil
        (set-face-attribute 'default nil :font "Consolas-12")
