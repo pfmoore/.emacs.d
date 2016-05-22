@@ -52,15 +52,25 @@
 ;; Set the default font, try a series of options in turn.
 ;; Could probably be cleaned up somewhat.
 ;; Doesn't seem to work in server mode...?
-(condition-case nil
-    (set-face-attribute 'default nil :font "DejaVu Sans Mono-12")
-  (error
-   (condition-case nil
-       (set-face-attribute 'default nil :font "Consolas-12")
-     (error
-      (condition-case nil
-          (set-face-attribute 'default nil :font "Courier New-12")
-        (error nil))))))
+;(condition-case nil
+;    (set-face-attribute 'default nil :font "DejaVu Sans Mono-12")
+;  (error
+;   (condition-case nil
+;       (set-face-attribute 'default nil :font "Consolas-12")
+;     (error
+;      (condition-case nil
+;          (set-face-attribute 'default nil :font "Courier New-12")
+;        (error nil))))))
+
+;; Find an available font, from https://www.emacswiki.org/emacs/SetFonts
+(require 'cl)
+(defun font-candidate (&rest fonts)
+  "Return existing font which first match."
+  (find-if (lambda (f) (find-font (font-spec :name f))) fonts))
+
+;; Set font correctly even in daemon-mode, see
+;; http://stackoverflow.com/questions/3984730/emacs-gui-with-emacs-daemon-not-loading-fonts-correctly
+(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-12"))
 
 ;; Essential settings.
 ;; Review. These are "essential" only in the sense that the person I picked this
