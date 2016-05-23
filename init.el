@@ -44,7 +44,7 @@
 ;; Specifies local directory to load packages from
 ;; This seems to only be so that we can manually add things there.
 ;; These directories are not managed via package control.
-; (add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path "~/.emacs.d/lisp/")
 ; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 ; (let ((default-directory  "~/.emacs.d/packages/"))
 ;   (normal-top-level-add-subdirs-to-load-path))
@@ -62,15 +62,20 @@
 ;          (set-face-attribute 'default nil :font "Courier New-12")
 ;        (error nil))))))
 
-;; Find an available font, from https://www.emacswiki.org/emacs/SetFonts
-(require 'cl)
-(defun font-candidate (&rest fonts)
-  "Return existing font which first match."
-  (find-if (lambda (f) (find-font (font-spec :name f))) fonts))
-
-;; Set font correctly even in daemon-mode, see
-;; http://stackoverflow.com/questions/3984730/emacs-gui-with-emacs-daemon-not-loading-fonts-correctly
-(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-12"))
+(defun pfm/load-font ()
+  "Do font check, then remove self from `focus-in-hook'; need to run this just once."
+  (require 'pfm-font)
+  (remove-hook 'focus-in-hook #'pfm/load-font))
+;; For non-daemon, regular emacs launches, the frame/fonts are loaded *before*
+;; the emacs config is read. But when emacs is launched as a daemon (using
+;; emacsclient, the fonts are not actually loaded until the point when the
+;; `after-make-frame-functions' hook is run. But even at that point, the frame
+;; is not yet selected (for the daemon case). Without a selected frame, the
+;; `find-font' will not work correctly. So we do the font check in
+;; `focus-in-hook' instead by which all the below are true:
+;;  - Fonts are loaded (in both daemon and non-daemon cases).
+;;  - The frame is selected and so `find-font' calls work correctly.
+(add-hook 'focus-in-hook #'pfm/load-font)
 
 ;; Essential settings.
 ;; Review. These are "essential" only in the sense that the person I picked this
@@ -83,6 +88,9 @@
       inhibit-startup-echo-area-message t)
 (setq make-backup-files nil) ; No backup files ending in ~
 (setq auto-save-default nil) ; No autosave files #...#
+; No auto-save-list directory, see
+; http://emacs.stackexchange.com/questions/18677/prevent-auto-save-list-directory-to-be-created
+(setq auto-save-list-file-prefix nil)
 (tool-bar-mode -1) ; No toolbar
 (scroll-bar-mode -1) ; Hide scrollbars
 (menu-bar-mode -1) ; Hide menu bar
