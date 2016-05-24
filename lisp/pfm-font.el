@@ -6,10 +6,11 @@
 
 (setq pfm-default-font
       (font-candidate
-       "Wibble-12"
        "DejaVu Sans Mono-12"
        "Consolas-12"
        "Courier-12"))
 
+(add-to-list 'default-frame-alist (cons 'font pfm-default-font))
+(set-default-font pfm-default-font)
 
 (provide 'pfm-font)
