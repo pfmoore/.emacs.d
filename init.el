@@ -1,5 +1,14 @@
-;;(setq url-proxy-services '(("http" . "localhost:3128")
-;;                           ("https" . "localhost:3128")))
+;; Specifies local directory to load packages from
+;; This seems to only be so that we can manually add things there.
+;; These directories are not managed via package control.
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
+;; System-specific configuration
+;; Run this first so that (for example) proxy config happens
+;; before we need to use it to download packages
+(condition-case nil
+    (load (concat "system-" (downcase (system-name))))
+  (error nil))
 
 ;; Setup package control
 (require 'package)
@@ -41,10 +50,6 @@
 ;; Needed to enable the use-package function below
 (require 'use-package)
 
-;; Specifies local directory to load packages from
-;; This seems to only be so that we can manually add things there.
-;; These directories are not managed via package control.
-(add-to-list 'load-path "~/.emacs.d/lisp/")
 ; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 ; (let ((default-directory  "~/.emacs.d/packages/"))
 ;   (normal-top-level-add-subdirs-to-load-path))
@@ -171,6 +176,10 @@
 ;;  (setq magit-push-always-verify nil)
 ;;  (setq magit-last-seen-setup-instructions "1.4.0"))
 
+(use-package powershell
+  :ensure t
+  :defer t)
+
 ;; Start the Emacs server
 (require 'server)
 (unless (server-running-p)
@@ -182,13 +191,13 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (magit use-package sublime-themes powershell linum-relative helm evil-surround evil-leader))))
+    (evil magit use-package sublime-themes powershell linum-relative helm evil-surround evil-leader))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:background nil)))))
 
 ;; Force git to use a GUI to ask for user ID and password
 (setenv "GIT_ASKPASS" "git-gui--askpass")
