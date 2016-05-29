@@ -201,3 +201,15 @@
 
 ;; Force git to use a GUI to ask for user ID and password
 (setenv "GIT_ASKPASS" "git-gui--askpass")
+
+(require 'cl)
+(defun pfm-save-if-last-frame (frame)
+  (when (eq 1 (cl-count-if
+               (lambda (f)
+                 (eq
+                  (frame-parameter f 'display)
+                  (frame-parameter frame 'display)))
+               (visible-frame-list)))
+    (save-some-buffers)))
+
+(add-to-list 'delete-frame-functions #'pfm-save-if-last-frame)
